@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome to Batangas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .background {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          rgba(47, 111, 109, 0.6),
+          rgba(47, 111, 109, 0.6)
+        ),
+        url("batangas-bg.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      filter: blur(6px);
+      transform: scale(1.1);
+      z-index: -1;
+    }
+
+    .content {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      animation: fadeIn 1.5s ease;
+    }
+
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+
+    button {
+      padding: 14px 36px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2F6F6D;
+      background: #F2C94C;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .fade-out {
+      animation: fadeOut 1.5s ease forwards;
+    }
+
+    .background.clear {
+      animation: clearBackground 1.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(1.05);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+    }
+
+    @keyframes clearBackground {
+      from {
+        background: linear-gradient(
+          rgba(47, 111, 109, 0.6),
+          rgba(47, 111, 109, 0.6)
+        ), url("batangas-bg.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        filter: blur(6px);
+        transform: scale(1.1);
+      }
+      to {
+        background: linear-gradient(
+          rgba(47, 111, 109, 0),
+          rgba(47, 111, 109, 0)
+        ), url("batangas-bg.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        filter: blur(0px);
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="background"></div>
+
+  <div class="content" id="intro">
+    <div>
+      <h1>Explore Batangas</h1>
+      <p>Where nature, water, and adventure meet</p>
+      <button onclick="enterSite()">Enter Website</button>
+    </div>
+  </div>
+
+  <!-- Ambient Sound -->
+  <audio id="ambience" src="batangas-ambience.mp3"></audio>
+
+  <script>
+    function enterSite() {
+      const intro = document.getElementById("intro");
+      const background = document.querySelector(".background");
+      const audio = document.getElementById("ambience");
+
+      audio.volume = 0.8;
+      
+      // Handle autoplay restrictions with fallback
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log('Autoplay prevented - continuing without audio');
+        });
+      }
+
+      intro.classList.add("fade-out");
+      background.classList.add("clear");
+
+      // Fade out audio smoothly
+      let fadeAudio = setInterval(() => {
+        if (audio.volume > 0.05) {
+          audio.volume -= 0.05;
+        } else {
+          clearInterval(fadeAudio);
+        }
+      }, 200);
+
+      // Proceed after ambience is felt
+      setTimeout(() => {
+        window.location.href = "./main.html";
+      }, 3500); // gives emotional pause
+    }
+  </script>
+</body>
+</html>
